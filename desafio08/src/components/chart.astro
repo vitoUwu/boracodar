@@ -1,0 +1,29 @@
+---
+import ChartLine from "./chartLine.astro";
+
+interface Props {
+  data: {
+    labels: {
+      name: string;
+      value: number;
+    }[];
+  };
+}
+
+const { data } = Astro.props;
+const higherValue = data.labels.reduce((a, b) => Math.max(a, b.value), 0);
+---
+
+<div
+  class="flex gap-6 h-64 min-h-fit max-w-fit justify-between items-end my-4 border-b-2 pb-1 px-3 border-zinc-600"
+>
+  {
+    data.labels.map((label) => (
+      <ChartLine
+        label={label.name}
+        value={label.value}
+        maxValue={higherValue}
+      />
+    ))
+  }
+</div>

@@ -1,0 +1,22 @@
+---
+import { EmotionType } from "../@types/Enums";
+
+interface Props {
+  type: EmotionType;
+}
+
+const { type } = Astro.props;
+const gradient = [
+  "to-emerald-300 from-emerald-500",
+  "to-amber-300 from-amber-500",
+  "to-red-300 from-red-500",
+][type];
+const text = ["Excelente!", "Bom", "Vamos melhorar..."][type];
+const textColor = ["text-emerald-300", "text-amber-300", "text-red-300"][type];
+---
+
+<div class="flex flex-col items-center gap-2">
+  <div class={`aspect-square w-16 bg-gradient-to-t rounded-full ${gradient}`}>
+  </div>
+  <p class={`font-bold text-xl ${textColor}`}>{text}</p>
+</div>

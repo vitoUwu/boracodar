@@ -1,0 +1,86 @@
+---
+import Dot from "./dot.astro";
+
+interface Props {
+  progress?: number;
+  goal: number;
+  prefix?: string;
+}
+
+const { progress = 0, goal, prefix } = Astro.props;
+const percentage = Math.floor((progress * 100) / goal);
+
+function polarToCartesian(
+  centerX: number,
+  centerY: number,
+  radius: number,
+  angleInDegrees: number
+) {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+
+  return {
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
+  };
+}
+
+function createArc(
+  x: number,
+  y: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number
+) {
+  const start = polarToCartesian(x, y, radius, endAngle);
+  const end = polarToCartesian(x, y, radius, startAngle);
+  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+  const d = `M${start.x},${start.y} A${radius},${radius} 0 ${largeArcFlag},0 ${end.x},${end.y}`;
+  return d;
+}
+
+const numberFormatter = new Intl.NumberFormat("pt-BR", { notation: "compact" });
+---
+
+<div
+  class="bg-main-500 aspect-square w-64 rounded-full flex justify-center items-center relative"
+>
+  <svg viewBox="0 0 110 110" class="absolute inset-0">
+    <defs>
+      <linearGradient id="stroke-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#8b5cf6"></stop>
+        <stop offset="100%" stop-color="rgb(109 40 217)"></stop>
+      </linearGradient>
+    </defs>
+    <path
+      d={createArc(55, 55, 48, 0, 359.99 * Math.min(percentage / 100, 1))}
+      stroke="url(#stroke-gradient)"
+      stroke-width="14"
+      stroke-linecap="round"
+      fill="none"></path>
+  </svg>
+
+  <div
+    class="bg-main-600 aspect-square w-48 rounded-full flex flex-col justify-center items-center"
+  >
+    <p class="text-6xl font-bold">{percentage}%</p>
+    <p class="text-2xl">alcançada</p>
+  </div>
+</div>
+<div class="w-full flex gap-3 flex-wrap justify-center">
+  <div class="flex gap-2 items-center">
+    <Dot class="bg-main-500" />
+    <p class="font-bold">
+      Esperado <span class="font-normal text-zinc-300"
+        >{prefix}{numberFormatter.format(goal)}</span
+      >
+    </p>
+  </div>
+  <div class="flex gap-2 items-center">
+    <Dot class="bg-violet-400" />
+    <p class="font-bold">
+      Alcançado <span class="font-normal text-zinc-300"
+        >{prefix}{numberFormatter.format(progress)}</span
+      >
+    </p>
+  </div>
+</div>

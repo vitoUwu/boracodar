@@ -1,0 +1,87 @@
+---
+import { EmotionType } from "../@types/Enums";
+import Card from "../components/card.astro";
+import Chart from "../components/chart.astro";
+import Dot from "../components/dot.astro";
+import Emotion from "../components/emotion.astro";
+import GoalProgress from "../components/goalProgress.astro";
+import Html from "../layouts/html.astro";
+---
+
+<Html>
+  <div class="flex justify-center items-center p-10">
+    <div class="grid grid-rows-2 grid-cols-3 gap-4 text-gray-200 w-fit">
+      <Card>
+        <div class="flex flex-col items-center justify-between h-full">
+          <h1 class="font-bold text-lg">NPS Geral</h1>
+          <Emotion type={EmotionType.Good} />
+          <p class="font-bold text-sm">
+            NPS Score <span class="ml-1 font-normal">87</span>
+          </p>
+        </div>
+      </Card>
+      <Card>
+        <div
+          class="flex flex-col items-center justify-between h-full gap-4 mx-5"
+        >
+          <h1 class="font-bold text-lg">Vendas Fechadas</h1>
+          <GoalProgress goal={100} progress={70} />
+        </div>
+      </Card>
+      <Card>
+        <div
+          class="flex flex-col items-center justify-between h-full gap-4 mx-5"
+        >
+          <h1 class="font-bold text-lg">Meta Mensal</h1>
+          <GoalProgress goal={70000} progress={63000} prefix="R$" />
+        </div>
+      </Card>
+      <div class="col-span-3">
+        <Card>
+          <div class="flex justify-center gap-10 w-full p-4">
+            <div class="flex flex-col gap-4">
+              <h1 class="text-lg font-bold">Venda semanal</h1>
+              <div class="text-zinc-400">
+                <div class="flex gap-2 items-center">
+                  <Dot class="bg-emerald-300" />
+                  <p>Dia com mais vendas</p>
+                </div>
+                <p
+                  class="text-zinc-300 text-xl first-letter:uppercase lowercase"
+                >
+                  quarta-feira
+                </p>
+              </div>
+              <div class="text-zinc-400">
+                <div class="flex gap-2 items-center">
+                  <Dot class="bg-red-300" />
+                  <p>Dia com menos vendas</p>
+                </div>
+                <p
+                  class="text-zinc-300 text-xl first-letter:uppercase lowercase"
+                >
+                  domingo
+                </p>
+              </div>
+            </div>
+            <div>
+              <Chart
+                data={{
+                  labels: [
+                    { name: "dom", value: 10 },
+                    { name: "seg", value: 20 },
+                    { name: "ter", value: 30 },
+                    { name: "qua", value: 40 },
+                    { name: "qui", value: 30 },
+                    { name: "sex", value: 20 },
+                    { name: "sáb", value: 15 },
+                  ],
+                }}
+              />
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </div>
+</Html>

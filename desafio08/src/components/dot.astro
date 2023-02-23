@@ -1,0 +1,9 @@
+---
+interface Props {
+  class: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<span class={`aspect-square h-3 rounded-full ${className}`}></span>
