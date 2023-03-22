@@ -74,10 +74,18 @@ export function Login() {
                   aria-invalid={errors.password ? "true" : "false"}
                   placeholder="Digite a sua senha"
                   type="password"
-                  {...register("password", { required: true })}
+                  {...register("password", {
+                    required: true,
+                    pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+                  })}
                 />
                 {errors.password?.type === "required" ? (
                   <Error>Obrigatório</Error>
+                ) : errors.password?.type === "pattern" ? (
+                  <Error>
+                    Sua senha deve ter no mínimo 8 caractéres, 1 letra e 1
+                    número
+                  </Error>
                 ) : null}
               </InputCol>
             </InputRow>
